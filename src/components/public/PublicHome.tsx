@@ -36,11 +36,12 @@ function MobileCartFloat() {
     <button
       type="button"
       id="mobile-cart-float"
-      className="fixed bottom-5 right-5 z-[800] flex h-[58px] w-[58px] items-center justify-center rounded-full border-none bg-brand-orange text-[22px] text-white shadow-[0_6px_20px_rgba(232,72,10,0.4)] transition-transform hover:scale-105 lg:hidden"
+      className="mobile-fab-cart fixed z-[800] flex h-14 w-14 items-center justify-center rounded-full border-none bg-brand-orange text-[22px] text-white shadow-[0_6px_20px_rgba(232,72,10,0.4)] transition-transform active:scale-95 lg:hidden"
       onClick={openDrawer}
+      aria-label="Abrir carrito"
     >
       🛒
-      <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand-yellow text-[11px] font-black text-brand-black">
+      <span className="absolute right-0 top-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-yellow px-1 text-[11px] font-black text-brand-black">
         {cart.itemCount}
       </span>
     </button>
@@ -51,8 +52,12 @@ function Toast() {
   const { toast } = usePublicStore();
   return (
     <div
-      className={`fixed bottom-7 right-7 z-[9999] flex items-center gap-2 rounded-lg bg-whatsapp px-[22px] py-3 text-sm font-extrabold text-white transition-transform duration-300 ${
-        toast ? "translate-x-0" : "translate-x-[120%]"
+      role="status"
+      aria-live="polite"
+      className={`mobile-toast fixed z-[850] flex max-w-[min(100%,20rem)] items-center gap-2 rounded-lg bg-whatsapp px-4 py-3 text-sm font-extrabold text-white shadow-[0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-300 sm:max-w-none sm:px-[22px] lg:z-[9999] ${
+        toast
+          ? "pointer-events-auto translate-y-0 opacity-100"
+          : "pointer-events-none translate-y-3 opacity-0"
       }`}
     >
       {toast}
@@ -69,7 +74,7 @@ function PublicHomeContent() {
 
       <div
         id="main-layout"
-        className="mx-auto grid max-w-site items-start gap-7 px-7 py-14 lg:grid-cols-[1fr_380px]"
+        className="mx-auto grid max-w-site items-start gap-5 px-4 py-8 sm:gap-6 sm:px-6 sm:py-10 lg:grid-cols-[1fr_380px] lg:gap-7 lg:px-7 lg:py-14"
       >
         <div id="main-col">
           <PromosSection />
@@ -78,11 +83,14 @@ function PublicHomeContent() {
         <CartSidebar />
       </div>
 
-      <div id="bottom-section" className="mx-auto max-w-site px-7 pb-16">
-        <div id="contacto-section" className="sec-title">
+      <div
+        id="bottom-section"
+        className="mx-auto max-w-site px-4 pb-10 sm:px-6 sm:pb-12 lg:px-7 lg:pb-16"
+      >
+        <div id="contacto-section" className="sec-title public-section-anchor">
           📍 DÓNDE ESTAMOS
         </div>
-        <div className="mt-2 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-2 grid gap-4 sm:gap-6 md:grid-cols-2 xl:grid-cols-3">
           <HoursSection />
           <MapSection />
           <ContactSection />

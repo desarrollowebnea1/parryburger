@@ -20,6 +20,7 @@
    Design tokens — migrated from legacy/index.html
 ============================ */
 :root {
+  --nav-offset: calc(66px + env(safe-area-inset-top, 0px));
   --naranja: #e8480a;
   --naranja-dark: #bf3a07;
   --naranja-glow: rgba(232, 72, 10, 0.18);
@@ -51,6 +52,7 @@
 
   html {
     @apply scroll-smooth text-base;
+    scroll-padding-top: calc(var(--nav-offset) + 10px);
   }
 
   body {
@@ -107,7 +109,34 @@
   }
 
   .sec-title {
-    @apply mb-[22px] flex items-center gap-2.5 font-display text-[38px] tracking-[2px] text-brand-orange;
+    @apply mb-4 flex items-center gap-2 font-display text-[clamp(1.75rem,7vw,2.375rem)] tracking-[2px] text-brand-orange sm:mb-[22px] sm:gap-2.5;
+  }
+
+  .public-section-anchor {
+    scroll-margin-top: calc(var(--nav-offset) + 10px);
+  }
+
+  .top-nav-offset {
+    top: var(--nav-offset);
+  }
+
+  .mobile-fab-cart {
+    bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+    right: max(1rem, env(safe-area-inset-right, 0px));
+  }
+
+  .mobile-toast {
+    left: max(1rem, env(safe-area-inset-left, 0px));
+    right: max(1rem, env(safe-area-inset-right, 0px));
+    bottom: max(5.25rem, calc(3.75rem + env(safe-area-inset-bottom, 0px)));
+  }
+
+  @media (min-width: 1024px) {
+    .mobile-toast {
+      left: auto;
+      right: max(1.75rem, env(safe-area-inset-right, 0px));
+      bottom: max(1.75rem, env(safe-area-inset-bottom, 0px));
+    }
   }
 
   .promo-card {
@@ -171,7 +200,7 @@
   }
 
   .info-card {
-    @apply rounded-brand border border-brand-gray1 bg-brand-black3 p-[22px];
+    @apply break-words rounded-brand border border-brand-gray1 bg-brand-black3 p-4 sm:p-[22px];
   }
 
   .info-card-title {

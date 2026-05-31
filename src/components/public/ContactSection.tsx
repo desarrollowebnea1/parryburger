@@ -20,7 +20,7 @@ export default function ContactSection() {
           💬
         </div>
         <div>
-          <strong className="block text-[13px] font-extrabold">
+          <strong className="block break-all text-[13px] font-extrabold">
             {formatWhatsAppDisplay(settings.whatsappNumber)}
           </strong>
           <span className="text-[11px] text-brand-cream/40">WhatsApp pedidos</span>
@@ -33,7 +33,7 @@ export default function ContactSection() {
             📷
           </div>
           <div>
-            <strong className="block text-[13px] font-extrabold">{igLabel}</strong>
+            <strong className="block break-words text-[13px] font-extrabold">{igLabel}</strong>
             <span className="text-[11px] text-brand-cream/40">Instagram</span>
           </div>
         </div>
@@ -44,7 +44,7 @@ export default function ContactSection() {
           📘
         </div>
         <div>
-          <strong className="block text-[13px] font-extrabold">{fbLabel}</strong>
+          <strong className="block break-words text-[13px] font-extrabold">{fbLabel}</strong>
           <span className="text-[11px] text-brand-cream/40">Facebook</span>
         </div>
       </div>

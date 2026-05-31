@@ -32,10 +32,10 @@ export default function MenuSection() {
   }, [categories, activeFilter]);
 
   return (
-    <div id="menu-section" className="mt-[52px]">
+    <div id="menu-section" className="public-section-anchor mt-8 sm:mt-10 lg:mt-[52px]">
       <div className="sec-title">🍽️ NUESTRO MENÚ</div>
 
-      <div className="mb-[22px] flex flex-wrap gap-2">
+      <div className="mb-4 flex flex-wrap gap-2 sm:mb-[22px]">
         {tabs.map((tab) => (
           <button
             key={tab.id}

@@ -7,7 +7,7 @@ export default function PromosSection() {
   const { promos } = usePublicStore();
 
   return (
-    <div id="promos-section" className="mb-[52px]">
+    <div id="promos-section" className="public-section-anchor mb-8 sm:mb-10 lg:mb-[52px]">
       <div className="sec-title">⚡ PROMOS DESTACADAS</div>
       {promos.length ? (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4">

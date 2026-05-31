@@ -11,7 +11,7 @@ export default function Footer() {
   const parts = text.split("Parry Burger Express");
 
   return (
-    <footer className="border-t border-white/[0.04] bg-brand-black2 px-7 py-[22px] text-center text-xs text-brand-cream/25">
+    <footer className="border-t border-white/[0.04] bg-brand-black2 px-4 py-4 text-center text-xs leading-relaxed text-brand-cream/25 sm:px-7 sm:py-[22px]">
       <p>
         {parts.length > 1 ? (
           <>
