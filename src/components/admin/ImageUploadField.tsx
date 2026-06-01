@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { adminUpload } from "@/lib/admin/api-client";
+import { UPLOAD } from "@/lib/constants";
 import { PLACEHOLDER_FOOD } from "@/lib/format";
 import AdminButton from "@/components/admin/AdminButton";
 
@@ -23,7 +24,24 @@ export default function ImageUploadField({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
+  function validateFile(file: File): string | null {
+    const allowed = UPLOAD.allowedMimeTypes as readonly string[];
+    if (!allowed.includes(file.type)) {
+      return "Formato no permitido. Usá JPG, PNG o WEBP.";
+    }
+    if (file.size > UPLOAD.maxSizeBytes) {
+      return "La imagen no puede superar 5 MB.";
+    }
+    return null;
+  }
+
   async function handleFile(file: File) {
+    const validationError = validateFile(file);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     setError("");
     setUploading(true);
     try {
@@ -33,6 +51,7 @@ export default function ImageUploadField({
       setError(err instanceof Error ? err.message : "No se pudo subir la imagen");
     } finally {
       setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
     }
   }
 
@@ -79,7 +98,6 @@ export default function ImageUploadField({
             ref={inputRef}
             type="file"
             accept="image/jpeg,image/png,image/webp,image/*"
-            capture="environment"
             className="hidden"
             onChange={(event) => {
               const file = event.target.files?.[0];
