@@ -9,6 +9,7 @@ import {
   AdminTextarea,
 } from "@/components/admin/AdminFields";
 import ImagePositionField from "@/components/admin/ImagePositionField";
+import AdminFormFooter from "@/components/admin/AdminFormFooter";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 import { adminFetch } from "@/lib/admin/api-client";
 import { normalizeImagePosition } from "@/lib/image-position";
@@ -176,9 +177,11 @@ export default function PromoForm({
         />
       </div>
 
-      <AdminButton type="submit" disabled={loading}>
-        {loading ? "Guardando..." : promoId ? "Guardar cambios" : "Crear promoción"}
-      </AdminButton>
+      <AdminFormFooter>
+        <AdminButton type="submit" disabled={loading}>
+          {loading ? "Guardando..." : promoId ? "Guardar cambios" : "Crear promoción"}
+        </AdminButton>
+      </AdminFormFooter>
     </form>
   );
 }

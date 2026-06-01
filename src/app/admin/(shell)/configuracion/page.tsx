@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AdminCard from "@/components/admin/AdminCard";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import SettingsForm from "@/components/admin/SettingsForm";
 import { adminFetch } from "@/lib/admin/api-client";
 import type { PublicOpeningHour, PublicPaymentMethod } from "@/types";
@@ -43,9 +44,7 @@ export default function AdminSettingsPage() {
 
   return (
     <div>
-      <h2 className="mb-6 font-display text-3xl tracking-[2px] text-brand-orange">
-        Configuración
-      </h2>
+      <AdminPageHeader title="Configuración" />
       <AdminCard title="Datos del negocio">
         <SettingsForm
           initial={{

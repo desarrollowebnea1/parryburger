@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import AdminAlert from "@/components/admin/AdminAlert";
 import AdminButton from "@/components/admin/AdminButton";
 import { AdminCheckbox, AdminInput, AdminTextarea } from "@/components/admin/AdminFields";
+import AdminFormFooter from "@/components/admin/AdminFormFooter";
 import { adminFetch } from "@/lib/admin/api-client";
 
 export type CategoryFormValues = {
@@ -101,9 +102,11 @@ export default function CategoryForm({
         onChange={(e) => setValues({ ...values, active: e.target.checked })}
       />
 
-      <AdminButton type="submit" disabled={loading}>
-        {loading ? "Guardando..." : categoryId ? "Guardar cambios" : "Crear categoría"}
-      </AdminButton>
+      <AdminFormFooter>
+        <AdminButton type="submit" disabled={loading}>
+          {loading ? "Guardando..." : categoryId ? "Guardar cambios" : "Crear categoría"}
+        </AdminButton>
+      </AdminFormFooter>
     </form>
   );
 }

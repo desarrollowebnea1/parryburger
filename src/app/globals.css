@@ -213,6 +213,14 @@
   }
 
   .admin-input {
-    @apply rounded-lg border border-brand-gray1 bg-brand-black2 px-3 py-2.5 text-sm text-brand-cream outline-none transition-colors placeholder:text-brand-cream/25 focus:border-brand-orange;
+    @apply min-h-11 rounded-lg border border-brand-gray1 bg-brand-black2 px-3 py-2.5 text-base text-brand-cream outline-none transition-colors placeholder:text-brand-cream/25 focus:border-brand-orange sm:text-sm;
+  }
+
+  .admin-form-section {
+    @apply space-y-4 rounded-lg border border-brand-gray1/60 bg-brand-black2/40 p-4 sm:space-y-5 sm:p-5;
+  }
+
+  .admin-action-link {
+    @apply inline-flex min-h-11 min-w-[4.5rem] items-center justify-center rounded-lg px-3 text-sm font-bold transition-colors;
   }
 }

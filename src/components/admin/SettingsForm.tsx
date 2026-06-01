@@ -5,6 +5,7 @@ import AdminAlert from "@/components/admin/AdminAlert";
 import AdminButton from "@/components/admin/AdminButton";
 import { AdminCheckbox, AdminInput, AdminTextarea } from "@/components/admin/AdminFields";
 import ImagePositionField from "@/components/admin/ImagePositionField";
+import AdminFormFooter from "@/components/admin/AdminFormFooter";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 import { adminFetch } from "@/lib/admin/api-client";
 import { normalizeImagePosition } from "@/lib/image-position";
@@ -102,10 +103,11 @@ export default function SettingsForm({ initial }: SettingsFormProps) {
       <AdminAlert type="error" message={error} />
       <AdminAlert type="success" message={success} />
 
-      <section className="space-y-4">
-        <h4 className="font-cond text-sm font-black uppercase tracking-[2px] text-brand-cream/50">
+      <section className="admin-form-section">
+        <h4 className="font-cond text-sm font-black uppercase tracking-[2px] text-brand-orange">
           Negocio
         </h4>
+        <div className="mt-4 space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
           <AdminInput
             label="Nombre del negocio *"
@@ -119,12 +121,6 @@ export default function SettingsForm({ initial }: SettingsFormProps) {
             onChange={(e) => setValues({ ...values, slogan: e.target.value })}
           />
           <AdminInput
-            label="WhatsApp (solo dígitos) *"
-            value={values.whatsappNumber}
-            onChange={(e) => setValues({ ...values, whatsappNumber: e.target.value })}
-            required
-          />
-          <AdminInput
             label="Costo de envío"
             type="number"
             min={0}
@@ -132,13 +128,22 @@ export default function SettingsForm({ initial }: SettingsFormProps) {
             onChange={(e) => setValues({ ...values, deliveryCost: Number(e.target.value) })}
           />
         </div>
+        </div>
       </section>
 
-      <section className="space-y-4">
-        <h4 className="font-cond text-sm font-black uppercase tracking-[2px] text-brand-cream/50">
-          Redes y ubicación
+      <section className="admin-form-section">
+        <h4 className="font-cond text-sm font-black uppercase tracking-[2px] text-brand-orange">
+          WhatsApp y redes
         </h4>
+        <div className="mt-4 space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
+          <AdminInput
+            label="WhatsApp (solo dígitos) *"
+            value={values.whatsappNumber}
+            onChange={(e) => setValues({ ...values, whatsappNumber: e.target.value })}
+            required
+            className="md:col-span-2"
+          />
           <AdminInput
             label="Instagram URL"
             value={values.instagramUrl ?? ""}
@@ -166,12 +171,14 @@ export default function SettingsForm({ initial }: SettingsFormProps) {
             onChange={(e) => setValues({ ...values, mapsEmbedUrl: e.target.value })}
           />
         </div>
+        </div>
       </section>
 
-      <section className="space-y-4">
-        <h4 className="font-cond text-sm font-black uppercase tracking-[2px] text-brand-cream/50">
+      <section className="admin-form-section">
+        <h4 className="font-cond text-sm font-black uppercase tracking-[2px] text-brand-orange">
           Hero (inicio)
         </h4>
+        <div className="mt-4 space-y-4">
         <AdminInput
           label="Etiqueta hero"
           value={values.heroTag ?? ""}
@@ -212,12 +219,14 @@ export default function SettingsForm({ initial }: SettingsFormProps) {
             setValues({ ...values, heroImagePosition })
           }
         />
+        </div>
       </section>
 
-      <section className="space-y-4">
-        <h4 className="font-cond text-sm font-black uppercase tracking-[2px] text-brand-cream/50">
+      <section className="admin-form-section">
+        <h4 className="font-cond text-sm font-black uppercase tracking-[2px] text-brand-orange">
           Horarios
         </h4>
+        <div className="mt-4 space-y-3">
         {values.openingHoursJson.map((hour, index) => (
           <div key={hour.id || index} className="grid gap-3 rounded-lg border border-brand-gray1 p-4 md:grid-cols-2">
             <AdminInput
@@ -238,12 +247,14 @@ export default function SettingsForm({ initial }: SettingsFormProps) {
             />
           </div>
         ))}
+        </div>
       </section>
 
-      <section className="space-y-4">
-        <h4 className="font-cond text-sm font-black uppercase tracking-[2px] text-brand-cream/50">
+      <section className="admin-form-section">
+        <h4 className="font-cond text-sm font-black uppercase tracking-[2px] text-brand-orange">
           Métodos de pago
         </h4>
+        <div className="mt-4 space-y-3">
         {values.paymentMethodsJson.map((method, index) => (
           <div key={method.id} className="flex flex-wrap items-center gap-4 rounded-lg border border-brand-gray1 p-4">
             <AdminInput
@@ -259,17 +270,27 @@ export default function SettingsForm({ initial }: SettingsFormProps) {
             />
           </div>
         ))}
+        </div>
       </section>
 
-      <AdminTextarea
-        label="Texto del footer"
-        value={values.footerText ?? ""}
-        onChange={(e) => setValues({ ...values, footerText: e.target.value })}
-      />
+      <section className="admin-form-section">
+        <h4 className="font-cond text-sm font-black uppercase tracking-[2px] text-brand-orange">
+          Mapa y footer
+        </h4>
+        <div className="mt-4">
+          <AdminTextarea
+            label="Texto del footer"
+            value={values.footerText ?? ""}
+            onChange={(e) => setValues({ ...values, footerText: e.target.value })}
+          />
+        </div>
+      </section>
 
-      <AdminButton type="submit" disabled={loading}>
-        {loading ? "Guardando..." : "Guardar configuración"}
-      </AdminButton>
+      <AdminFormFooter>
+        <AdminButton type="submit" disabled={loading}>
+          {loading ? "Guardando..." : "Guardar configuración"}
+        </AdminButton>
+      </AdminFormFooter>
     </form>
   );
 }

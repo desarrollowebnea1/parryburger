@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import AdminAlert from "@/components/admin/AdminAlert";
 import AdminButton from "@/components/admin/AdminButton";
@@ -54,15 +54,15 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function load() {
+  const load = useCallback(() => {
     adminFetch<{ order: OrderDetail }>(`/api/admin/orders/${params.id}`)
       .then((data) => setOrder(data.order))
       .catch((err) => setError(err instanceof Error ? err.message : "Error"));
-  }
+  }, [params.id]);
 
   useEffect(() => {
     load();
-  }, [params.id]);
+  }, [load]);
 
   async function updateStatus(status: OrderStatus) {
     setLoading(true);
@@ -96,17 +96,20 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
   const customerWa = buildWhatsAppUrl(order.customerPhone, customerMessage);
 
   return (
-    <div>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <Link href="/admin/pedidos" className="text-xs text-brand-cream/40 hover:text-brand-orange">
-            ← Volver a pedidos
-          </Link>
-          <h2 className="mt-2 font-display text-3xl tracking-[2px] text-brand-orange">
+    <div className="min-w-0">
+      <div className="mb-5 space-y-3">
+        <Link
+          href="/admin/pedidos"
+          className="inline-flex min-h-11 items-center text-sm font-bold text-brand-cream/50 hover:text-brand-orange"
+        >
+          ← Volver a pedidos
+        </Link>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <h2 className="break-all font-display text-2xl tracking-[2px] text-brand-orange sm:text-3xl">
             {order.orderCode}
           </h2>
+          <OrderStatusBadge status={order.status} />
         </div>
-        <OrderStatusBadge status={order.status} />
       </div>
 
       <AdminAlert type="error" message={error} />
@@ -114,42 +117,27 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
 
       <div className="mb-4 grid gap-4 lg:grid-cols-2">
         <AdminCard title="Cliente">
-          <p className="text-sm">
-            <strong>{order.customerName}</strong>
-            <br />
-            Tel: {order.customerPhone}
-            <br />
-            Entrega: {order.deliveryType}
-            {order.address ? (
-              <>
-                <br />
-                Dirección: {order.address}
-              </>
-            ) : null}
-            {order.zone ? (
-              <>
-                <br />
-                Zona: {order.zone}
-              </>
-            ) : null}
-            <br />
-            Pago: {order.paymentMethod}
-            {order.notes ? (
-              <>
-                <br />
-                Notas: {order.notes}
-              </>
-            ) : null}
-          </p>
+          <div className="space-y-2 break-words text-sm">
+            <p>
+              <strong className="text-brand-cream">{order.customerName}</strong>
+            </p>
+            <p>Tel: {order.customerPhone}</p>
+            <p>Entrega: {order.deliveryType}</p>
+            {order.address ? <p>Dirección: {order.address}</p> : null}
+            {order.zone ? <p>Zona: {order.zone}</p> : null}
+            <p>Pago: {order.paymentMethod}</p>
+            {order.notes ? <p>Notas: {order.notes}</p> : null}
+          </div>
           <div className="mt-4">
             <AdminButton
               variant="primary"
+              className="w-full"
               onClick={() => window.open(customerWa, "_blank")}
             >
               Enviar WhatsApp al cliente
             </AdminButton>
             <p className="mt-2 text-xs text-brand-cream/40">
-              Mensaje según estado actual: {ORDER_STATUS_LABELS[order.status]}
+              Mensaje según estado: {ORDER_STATUS_LABELS[order.status]}
             </p>
           </div>
         </AdminCard>
@@ -168,26 +156,30 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
         </AdminCard>
       </div>
 
-      <AdminCard title="Productos" >
+      <AdminCard title="Productos">
         <ul className="space-y-2 text-sm">
           {order.items.map((item, index) => (
-            <li key={`${item.name}-${index}`} className="flex justify-between border-b border-brand-gray1/40 py-2">
-              <span>
+            <li
+              key={`${item.name}-${index}`}
+              className="flex justify-between gap-3 border-b border-brand-gray1/40 py-2"
+            >
+              <span className="min-w-0 break-words">
                 {item.quantity} x {item.name}
               </span>
-              <span>{formatMoney(item.subtotal)}</span>
+              <span className="shrink-0">{formatMoney(item.subtotal)}</span>
             </li>
           ))}
         </ul>
       </AdminCard>
 
-      <AdminCard title="Cambiar estado" >
-        <div className="flex flex-wrap gap-2">
+      <AdminCard title="Cambiar estado">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-wrap">
           {STATUSES.map((status) => (
             <AdminButton
               key={status}
               variant={order.status === status ? "primary" : "secondary"}
               disabled={loading || order.status === status}
+              className="w-full"
               onClick={() => updateStatus(status)}
             >
               {ORDER_STATUS_LABELS[status]}

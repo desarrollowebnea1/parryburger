@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import AdminButton from "@/components/admin/AdminButton";
 import AdminCard from "@/components/admin/AdminCard";
+import AdminMobileCard from "@/components/admin/AdminMobileCard";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import { adminFetch } from "@/lib/admin/api-client";
 
 type Category = {
@@ -52,16 +54,54 @@ export default function AdminCategoriesPage() {
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-display text-3xl tracking-[2px] text-brand-orange">Categorías</h2>
-        <AdminButton href="/admin/categorias/nueva">+ Nueva categoría</AdminButton>
-      </div>
+      <AdminPageHeader
+        title="Categorías"
+        action={<AdminButton href="/admin/categorias/nueva">+ Nueva categoría</AdminButton>}
+      />
 
       {error ? <p className="mb-4 text-sm text-brand-orange">{error}</p> : null}
 
       <AdminCard title="Listado">
-        <div className="overflow-x-auto">
-          <table className="admin-table w-full min-w-[640px] text-left text-sm">
+        <ul className="flex flex-col gap-3 md:hidden">
+          {categories.map((category) => (
+            <AdminMobileCard key={category.id}>
+              <p className="text-lg font-bold text-brand-cream">{category.name}</p>
+              <p className="mt-1 text-sm text-brand-cream/55">
+                {category.productCount} productos · Orden {category.sortOrder}
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => toggleActive(category)}
+                  className={`inline-flex min-h-11 items-center rounded-full px-3 text-[11px] font-bold uppercase ${
+                    category.active
+                      ? "bg-whatsapp/15 text-whatsapp"
+                      : "bg-brand-gray1 text-brand-cream/40"
+                  }`}
+                >
+                  {category.active ? "Activa" : "Inactiva"}
+                </button>
+                <Link
+                  href={`/admin/categorias/${category.id}/editar`}
+                  className="admin-action-link bg-brand-orange/10 text-brand-orange"
+                >
+                  Editar
+                </Link>
+                <button
+                  type="button"
+                  disabled={category.productCount > 0}
+                  onClick={() => removeCategory(category)}
+                  className="admin-action-link text-[#c0392b] hover:bg-[#c0392b]/10 disabled:opacity-30"
+                >
+                  Eliminar
+                </button>
+              </div>
+            </AdminMobileCard>
+          ))}
+        </ul>
+
+        <div className="hidden overflow-x-auto md:block">
+          <table className="admin-table w-full text-left text-sm">
             <thead>
               <tr className="text-brand-cream/40">
                 <th className="pb-2">Nombre</th>
@@ -103,11 +143,6 @@ export default function AdminCategoriesPage() {
                         disabled={category.productCount > 0}
                         onClick={() => removeCategory(category)}
                         className="text-xs font-bold text-[#c0392b] hover:underline disabled:cursor-not-allowed disabled:opacity-30"
-                        title={
-                          category.productCount > 0
-                            ? "No se puede eliminar con productos"
-                            : undefined
-                        }
                       >
                         Eliminar
                       </button>

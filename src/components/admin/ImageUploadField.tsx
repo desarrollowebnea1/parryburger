@@ -42,8 +42,8 @@ export default function ImageUploadField({
         {label}
       </span>
 
-      <div className="flex flex-wrap items-start gap-4">
-        <div className="relative h-28 w-28 overflow-hidden rounded-lg border border-brand-gray1 bg-brand-black2">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+        <div className="relative mx-auto h-32 w-full max-w-[200px] overflow-hidden rounded-lg border border-brand-gray1 bg-brand-black2 sm:mx-0 sm:h-28 sm:w-28 sm:max-w-none">
           <Image
             src={value || PLACEHOLDER_FOOD}
             alt="Vista previa"
@@ -52,24 +52,34 @@ export default function ImageUploadField({
           />
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex w-full flex-col gap-2 sm:flex-1">
           <AdminButton
             type="button"
             variant="secondary"
             disabled={uploading}
+            className="w-full"
             onClick={() => inputRef.current?.click()}
           >
             {uploading ? "Subiendo..." : "Subir imagen"}
           </AdminButton>
           {value ? (
-            <AdminButton type="button" variant="ghost" onClick={() => onChange("")}>
+            <AdminButton
+              type="button"
+              variant="ghost"
+              className="w-full"
+              onClick={() => onChange("")}
+            >
               Eliminar imagen
             </AdminButton>
           ) : null}
+          <p className="text-center text-[10px] text-brand-cream/35 sm:text-left">
+            JPG, PNG o WEBP · máx. 5 MB
+          </p>
           <input
             ref={inputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp"
+            accept="image/jpeg,image/png,image/webp,image/*"
+            capture="environment"
             className="hidden"
             onChange={(event) => {
               const file = event.target.files?.[0];

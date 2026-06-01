@@ -6,11 +6,13 @@ export default function StatCard({
   value: number | string;
 }) {
   return (
-    <div className="rounded-[10px] border border-brand-gray1 bg-brand-black3 p-4">
-      <div className="text-[11px] font-bold uppercase tracking-wide text-brand-cream/35">
+    <div className="rounded-[10px] border border-brand-gray1 bg-brand-black3 p-3 sm:p-4">
+      <div className="text-[10px] font-bold uppercase tracking-wide text-brand-cream/35 sm:text-[11px]">
         {label}
       </div>
-      <div className="mt-1 font-display text-4xl text-brand-orange">{value}</div>
+      <div className="mt-0.5 font-display text-3xl text-brand-orange sm:mt-1 sm:text-4xl">
+        {value}
+      </div>
     </div>
   );
 }
