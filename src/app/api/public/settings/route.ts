@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { normalizeWhatsAppDigits } from "@/lib/social-links";
 import {
   decimalToNumber,
   handleApiError,
@@ -56,7 +57,7 @@ export async function GET() {
     const payload: PublicSettings = {
       businessName: settings.businessName,
       slogan: settings.slogan,
-      whatsappNumber: settings.whatsappNumber,
+      whatsappNumber: normalizeWhatsAppDigits(settings.whatsappNumber),
       instagramUrl: settings.instagramUrl,
       facebookUrl: settings.facebookUrl,
       address: settings.address,

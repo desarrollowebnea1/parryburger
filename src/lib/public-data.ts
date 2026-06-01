@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { decimalToNumber } from "@/lib/api/public";
 import { serializePublicProduct } from "@/lib/orders/public-order";
+import { normalizeWhatsAppDigits } from "@/lib/social-links";
 import type {
   PublicCategory,
   PublicOpeningHour,
@@ -48,7 +49,7 @@ export async function getPublicSettings(): Promise<PublicSettings | null> {
   return {
     businessName: settings.businessName,
     slogan: settings.slogan,
-    whatsappNumber: settings.whatsappNumber,
+    whatsappNumber: normalizeWhatsAppDigits(settings.whatsappNumber),
     instagramUrl: settings.instagramUrl,
     facebookUrl: settings.facebookUrl,
     address: settings.address,

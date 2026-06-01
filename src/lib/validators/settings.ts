@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { imagePositionSchema } from "@/lib/image-position";
+import { normalizeWhatsAppDigits } from "@/lib/social-links";
 
 const openingHourSchema = z.object({
   id: z.string().min(1),
@@ -20,7 +21,12 @@ export const updateSettingsSchema = z.object({
   whatsappNumber: z
     .string()
     .trim()
-    .regex(/^\d{10,15}$/, "WhatsApp debe contener solo dígitos (10-15)")
+    .min(8, "WhatsApp inválido")
+    .transform((value) => normalizeWhatsAppDigits(value))
+    .refine(
+      (value) => /^549\d{10}$/.test(value),
+      "WhatsApp debe ser un móvil argentino válido (ej. 3794180972 o 5493794180972)",
+    )
     .optional(),
   instagramUrl: z.string().url().optional().nullable(),
   facebookUrl: z.string().url().optional().nullable(),

@@ -7,6 +7,7 @@ import type {
   BusinessSettings,
 } from "@prisma/client";
 import { decimalToNumber } from "@/lib/api/public";
+import { normalizeWhatsAppDigits } from "@/lib/social-links";
 
 export function serializeAdminProduct(
   product: Product & { category?: Category | null },
@@ -132,7 +133,7 @@ export function serializeAdminSettings(settings: BusinessSettings) {
     id: settings.id,
     businessName: settings.businessName,
     slogan: settings.slogan,
-    whatsappNumber: settings.whatsappNumber,
+    whatsappNumber: normalizeWhatsAppDigits(settings.whatsappNumber),
     instagramUrl: settings.instagramUrl,
     facebookUrl: settings.facebookUrl,
     address: settings.address,

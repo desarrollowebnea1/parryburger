@@ -126,7 +126,7 @@ export const SEED_PROMOS = [
 export const SEED_SETTINGS = {
   businessName: "Parry Burger Express",
   slogan: "Sabores que te encantan. Pedí por WhatsApp.",
-  whatsappNumber: "543511234567",
+  whatsappNumber: "5493794180972",
   instagramUrl: "https://instagram.com/parrybur.ex",
   facebookUrl: "https://facebook.com/ParryBurgerExpress",
   address: "Av 3 de Abril y Chaco, Corrientes",

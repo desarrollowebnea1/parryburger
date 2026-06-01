@@ -138,7 +138,7 @@ export default function SettingsForm({ initial }: SettingsFormProps) {
         <div className="mt-4 space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
           <AdminInput
-            label="WhatsApp (solo dígitos) *"
+            label="WhatsApp *"
             value={values.whatsappNumber}
             onChange={(e) => setValues({ ...values, whatsappNumber: e.target.value })}
             required

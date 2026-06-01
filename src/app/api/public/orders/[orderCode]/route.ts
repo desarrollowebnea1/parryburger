@@ -6,6 +6,7 @@ import {
   jsonOk,
 } from "@/lib/api/public";
 import { buildOrderTimeline } from "@/lib/orders/tracking";
+import { normalizeWhatsAppDigits } from "@/lib/social-links";
 import { includedProductsMapFromPromos } from "@/lib/orders/public-order";
 import type { PublicOrderTracking } from "@/types";
 
@@ -108,7 +109,7 @@ export async function GET(
         };
       }),
       businessName: settings.businessName,
-      whatsappNumber: settings.whatsappNumber,
+      whatsappNumber: normalizeWhatsAppDigits(settings.whatsappNumber),
       createdAt: order.createdAt.toISOString(),
       updatedAt: order.updatedAt.toISOString(),
       timeline: buildOrderTimeline(
