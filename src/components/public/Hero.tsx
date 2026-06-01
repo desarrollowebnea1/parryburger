@@ -1,5 +1,6 @@
 "use client";
 
+import { WhatsAppIcon } from "@/components/public/BrandIcons";
 import PublicImage from "@/components/public/PublicImage";
 import { usePublicStore } from "@/context/PublicStoreProvider";
 
@@ -57,10 +58,11 @@ export default function Hero() {
           </a>
           <button
             type="button"
-            className="btn-outline px-5 py-3 text-[13px] sm:px-[26px] sm:py-3.5 sm:text-sm"
+            className="btn-outline inline-flex items-center gap-2 px-5 py-3 text-[13px] sm:px-[26px] sm:py-3.5 sm:text-sm"
             onClick={openWhatsAppDirect}
           >
-            💬 Hacer Pedido
+            <WhatsAppIcon size={18} />
+            Hacer Pedido
           </button>
         </div>
       </div>

@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  FacebookIcon,
+  InstagramIcon,
+  WhatsAppIcon,
+  WhatsAppIconOnGreen,
+} from "@/components/public/BrandIcons";
 import { formatWhatsAppDisplay, instagramHandle } from "@/lib/format";
 import { usePublicStore } from "@/context/PublicStoreProvider";
 
@@ -13,11 +19,11 @@ export default function ContactSection() {
 
   return (
     <div className="info-card">
-      <div className="info-card-title">📞 Contacto</div>
+      <div className="info-card-title">Contacto</div>
 
       <div className="mb-3 flex items-center gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-orange/10 text-[17px]">
-          💬
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-orange/10">
+          <WhatsAppIcon size={22} />
         </div>
         <div>
           <strong className="block break-all text-[13px] font-extrabold">
@@ -29,8 +35,8 @@ export default function ContactSection() {
 
       {igLabel ? (
         <div className="mb-3 flex items-center gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-orange/10 text-[17px]">
-            📷
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-orange/10">
+            <InstagramIcon size={22} />
           </div>
           <div>
             <strong className="block break-words text-[13px] font-extrabold">{igLabel}</strong>
@@ -40,8 +46,8 @@ export default function ContactSection() {
       ) : null}
 
       <div className="mb-3 flex items-center gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-orange/10 text-[17px]">
-          📘
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-orange/10">
+          <FacebookIcon size={22} />
         </div>
         <div>
           <strong className="block break-words text-[13px] font-extrabold">{fbLabel}</strong>
@@ -50,7 +56,8 @@ export default function ContactSection() {
       </div>
 
       <button type="button" className="wa-contact-btn mt-1" onClick={openWhatsAppDirect}>
-        💬 ESCRIBINOS POR WHATSAPP
+        <WhatsAppIconOnGreen size={20} />
+        ESCRIBINOS POR WHATSAPP
       </button>
     </div>
   );
