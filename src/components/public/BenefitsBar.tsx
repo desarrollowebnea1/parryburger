@@ -18,18 +18,21 @@ export default function BenefitsBar() {
   ];
 
   return (
-    <div id="benefits" className="border-y border-white/[0.05] bg-brand-black3 py-3 sm:py-[18px]">
-      <div className="mx-auto flex max-w-site flex-wrap justify-center gap-6 px-4 sm:gap-12 sm:px-7">
+    <div
+      id="benefits"
+      className="border-y border-white/[0.05] bg-brand-black3 py-3.5 sm:py-[18px]"
+    >
+      <div className="mx-auto grid max-w-site grid-cols-2 gap-x-3 gap-y-3.5 px-4 sm:flex sm:flex-wrap sm:justify-center sm:gap-12 sm:px-7">
         {items.map((item) => (
-          <div key={item.title} className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[9px] bg-brand-orange/10 text-lg">
+          <div key={item.title} className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px] bg-brand-orange/10 text-base sm:h-10 sm:w-10 sm:text-lg">
               {item.icon}
             </div>
-            <div className="min-w-0">
-              <strong className="block text-[12px] font-extrabold text-brand-cream sm:text-[13px]">
+            <div className="min-w-0 flex-1">
+              <strong className="block text-[11px] font-extrabold leading-tight text-brand-cream sm:text-[13px]">
                 {item.title}
               </strong>
-              <span className="block truncate text-[10px] uppercase tracking-wide text-brand-cream/40 sm:text-[11px] sm:whitespace-normal">
+              <span className="mt-0.5 block line-clamp-2 text-[9px] uppercase leading-snug tracking-wide text-brand-cream/40 sm:text-[11px] sm:line-clamp-none sm:whitespace-normal">
                 {item.sub}
               </span>
             </div>
