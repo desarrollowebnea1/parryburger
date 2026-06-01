@@ -1,4 +1,5 @@
 import type { CartLine } from "@/hooks/useCart";
+import { getIncludedProductNames } from "@/lib/promo-includes";
 import type {
   PublicCategory,
   PublicOrderTrackingItem,
@@ -32,13 +33,22 @@ export function resolveRepeatOrderItems(
 
   const promoMap = new Map<
     string,
-    { name: string; price: number; imageUrl: string | null }
+    {
+      name: string;
+      price: number;
+      imageUrl: string | null;
+      includedProductNames?: string[];
+    }
   >();
   for (const promo of promos) {
+    const includedProductNames = getIncludedProductNames(promo.products);
     promoMap.set(promo.id, {
       name: promo.title,
       price: promo.price,
       imageUrl: promo.imageUrl,
+      includedProductNames: includedProductNames.length
+        ? includedProductNames
+        : undefined,
     });
   }
 
@@ -70,6 +80,8 @@ export function resolveRepeatOrderItems(
         unavailableCount += 1;
         continue;
       }
+      const includedProductNames =
+        item.includedProductNames ?? promo.includedProductNames;
       lines.push({
         key: `promo:${item.promoId}`,
         type: "promo",
@@ -77,6 +89,7 @@ export function resolveRepeatOrderItems(
         name: promo.name,
         price: promo.price,
         imageUrl: promo.imageUrl,
+        includedProductNames,
         quantity: item.quantity,
       });
       continue;

@@ -6,6 +6,7 @@ import {
   jsonOk,
 } from "@/lib/api/public";
 import { buildOrderTimeline } from "@/lib/orders/tracking";
+import { includedProductsMapFromPromos } from "@/lib/orders/public-order";
 import type { PublicOrderTracking } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -66,6 +67,19 @@ export async function GET(
       return jsonError("Configuración del negocio no encontrada", 503);
     }
 
+    const promoIds = order.items
+      .map((item) => item.promoId)
+      .filter((id): id is string => Boolean(id));
+
+    const promos = promoIds.length
+      ? await prisma.promo.findMany({
+          where: { id: { in: promoIds } },
+          include: { products: { include: { product: true } } },
+        })
+      : [];
+
+    const promoIncludesMap = includedProductsMapFromPromos(promos);
+
     const payload: PublicOrderTracking = {
       orderCode: order.orderCode,
       status: order.status,
@@ -77,13 +91,22 @@ export async function GET(
       subtotal: decimalToNumber(order.subtotal),
       deliveryCost: decimalToNumber(order.deliveryCost),
       total: decimalToNumber(order.total),
-      items: order.items.map((item) => ({
-        name: item.name,
-        quantity: item.quantity,
-        subtotal: decimalToNumber(item.subtotal),
-        productId: item.productId,
-        promoId: item.promoId,
-      })),
+      items: order.items.map((item) => {
+        const includedProductNames = item.promoId
+          ? promoIncludesMap.get(item.promoId)
+          : undefined;
+        return {
+          name: item.name,
+          quantity: item.quantity,
+          subtotal: decimalToNumber(item.subtotal),
+          productId: item.productId,
+          promoId: item.promoId,
+          includedProductNames:
+            includedProductNames && includedProductNames.length > 0
+              ? includedProductNames
+              : undefined,
+        };
+      }),
       businessName: settings.businessName,
       whatsappNumber: settings.whatsappNumber,
       createdAt: order.createdAt.toISOString(),

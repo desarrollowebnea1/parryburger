@@ -1,5 +1,6 @@
 import type { Order, OrderItem, Prisma, Product } from "@prisma/client";
 import { decimalToNumber } from "@/lib/api/public";
+import { getIncludedProductNames } from "@/lib/promo-includes";
 import type { PublicOrder, PublicOrderItem, PublicProduct } from "@/types";
 
 export function serializePublicProduct(product: Product): PublicProduct {
@@ -57,6 +58,7 @@ export type ResolvedOrderLine = {
   price: number;
   quantity: number;
   subtotal: number;
+  includedProductNames?: string[];
 };
 
 export async function resolveOrderLines(
@@ -79,6 +81,9 @@ export async function resolveOrderLines(
     promoIds.length
       ? tx.promo.findMany({
           where: { id: { in: promoIds }, active: true },
+          include: {
+            products: { include: { product: true } },
+          },
         })
       : Promise.resolve([]),
   ]);
@@ -112,6 +117,11 @@ export async function resolveOrderLines(
         throw new Error(`Promo no disponible: ${item.promoId}`);
       }
       const price = decimalToNumber(promo.price);
+      const includedProductNames = getIncludedProductNames(
+        promo.products
+          .map((link) => link.product)
+          .filter((product) => product.active),
+      );
       resolved.push({
         productId: null,
         promoId: promo.id,
@@ -119,6 +129,8 @@ export async function resolveOrderLines(
         price,
         quantity: item.quantity,
         subtotal: price * item.quantity,
+        includedProductNames:
+          includedProductNames.length > 0 ? includedProductNames : undefined,
       });
     }
   }
@@ -128,4 +140,24 @@ export async function resolveOrderLines(
 
 export function roundMoney(value: number): number {
   return Math.round(value * 100) / 100;
+}
+
+type PromoWithProducts = {
+  id: string;
+  products: { product: Product }[];
+};
+
+export function includedProductsMapFromPromos(
+  promos: PromoWithProducts[],
+): Map<string, string[]> {
+  const map = new Map<string, string[]>();
+  for (const promo of promos) {
+    const names = getIncludedProductNames(
+      promo.products
+        .map((link) => link.product)
+        .filter((product) => product.active),
+    );
+    if (names.length) map.set(promo.id, names);
+  }
+  return map;
 }

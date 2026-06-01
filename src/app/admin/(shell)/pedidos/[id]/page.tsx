@@ -9,6 +9,7 @@ import OrderStatusBadge, {
   ORDER_STATUS_LABELS,
 } from "@/components/admin/OrderStatusBadge";
 import { adminFetch } from "@/lib/admin/api-client";
+import { PromoIncludesInline } from "@/components/public/PromoIncludes";
 import { formatMoney } from "@/lib/format";
 import {
   buildCustomerWhatsAppMessage,
@@ -36,6 +37,8 @@ type OrderDetail = {
     quantity: number;
     price: number;
     subtotal: number;
+    promoId?: string | null;
+    includedProductNames?: string[];
   }>;
   createdAt: string;
 };
@@ -165,6 +168,12 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
             >
               <span className="min-w-0 break-words">
                 {item.quantity} x {item.name}
+                {item.promoId && item.includedProductNames?.length ? (
+                  <PromoIncludesInline
+                    names={item.includedProductNames}
+                    className="mt-0.5 block text-xs text-brand-cream/45"
+                  />
+                ) : null}
               </span>
               <span className="shrink-0">{formatMoney(item.subtotal)}</span>
             </li>

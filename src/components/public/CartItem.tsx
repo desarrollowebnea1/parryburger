@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { PromoIncludesInline } from "@/components/public/PromoIncludes";
 import { formatMoney, PLACEHOLDER_FOOD } from "@/lib/format";
 import type { CartLine } from "@/hooks/useCart";
 import { usePublicStore } from "@/context/PublicStoreProvider";
@@ -23,6 +24,12 @@ export default function CartItemRow({ item }: CartItemProps) {
       />
       <div className="min-w-0 flex-1">
         <strong className="block text-xs font-extrabold leading-tight">{item.name}</strong>
+        {item.type === "promo" && item.includedProductNames?.length ? (
+          <PromoIncludesInline
+            names={item.includedProductNames}
+            className="mt-0.5 text-[10px] leading-snug text-brand-cream/35"
+          />
+        ) : null}
         <div className="mt-1 flex items-center gap-1.5">
           <button
             type="button"

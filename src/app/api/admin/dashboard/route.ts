@@ -50,7 +50,7 @@ export async function GET() {
         pendingOrders,
         totalOrders,
       },
-      recentOrders: recentOrders.map(serializeAdminOrder),
+      recentOrders: recentOrders.map((order) => serializeAdminOrder(order)),
     });
   } catch (error) {
     return handleApiError(error, "api/admin/dashboard");

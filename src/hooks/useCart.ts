@@ -14,6 +14,7 @@ export type CartLine = {
   price: number;
   imageUrl: string | null;
   quantity: number;
+  includedProductNames?: string[];
 };
 
 type CartStorage = {
@@ -108,6 +109,7 @@ export function useCart() {
             name: line.name,
             price: line.price,
             imageUrl: line.imageUrl,
+            includedProductNames: line.includedProductNames,
             quantity: existing.quantity + line.quantity,
           };
         } else {

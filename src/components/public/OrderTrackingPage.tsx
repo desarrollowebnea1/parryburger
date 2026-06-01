@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import OrderTimeline from "@/components/public/OrderTimeline";
+import { PromoIncludesInline } from "@/components/public/PromoIncludes";
 import { formatMoney } from "@/lib/format";
 import {
   buildOrderInquiryMessage,
@@ -126,8 +127,14 @@ export default function OrderTrackingPage({ orderCode }: OrderTrackingPageProps)
                     key={`${item.name}-${index}`}
                     className="flex justify-between border-b border-brand-gray1/50 py-2 last:border-none"
                   >
-                    <span>
+                    <span className="min-w-0">
                       {item.quantity} x {item.name}
+                      {item.promoId && item.includedProductNames?.length ? (
+                        <PromoIncludesInline
+                          names={item.includedProductNames}
+                          className="mt-0.5 block text-xs text-brand-cream/40"
+                        />
+                      ) : null}
                     </span>
                     <span className="text-brand-cream/70">
                       {formatMoney(item.subtotal)}

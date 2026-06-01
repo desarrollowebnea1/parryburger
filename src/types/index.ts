@@ -77,6 +77,7 @@ export type PublicOrderItem = {
   subtotal: number;
   productId: string | null;
   promoId: string | null;
+  includedProductNames?: string[];
 };
 
 export type PublicOrder = {
@@ -111,6 +112,7 @@ export type PublicOrderTrackingItem = {
   subtotal: number;
   productId: string | null;
   promoId: string | null;
+  includedProductNames?: string[];
 };
 
 export type PublicOrderTracking = {

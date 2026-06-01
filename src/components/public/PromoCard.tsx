@@ -1,7 +1,9 @@
 "use client";
 
 import PublicImage from "@/components/public/PublicImage";
+import { PromoIncludesInline } from "@/components/public/PromoIncludes";
 import { formatMoney } from "@/lib/format";
+import { getIncludedProductNames } from "@/lib/promo-includes";
 import type { PublicPromo } from "@/types";
 import { usePublicStore } from "@/context/PublicStoreProvider";
 
@@ -11,6 +13,7 @@ type PromoCardProps = {
 
 export default function PromoCard({ promo }: PromoCardProps) {
   const { openModal, addPromoToCart } = usePublicStore();
+  const includedNames = getIncludedProductNames(promo.products);
 
   return (
     <div
@@ -39,10 +42,13 @@ export default function PromoCard({ promo }: PromoCardProps) {
           {promo.title}
         </h3>
         {promo.description ? (
-          <p className="mb-3 text-xs leading-snug text-brand-cream/45">{promo.description}</p>
-        ) : (
-          <div className="mb-3" />
-        )}
+          <p className="mb-1.5 text-xs leading-snug text-brand-cream/45">{promo.description}</p>
+        ) : null}
+        <PromoIncludesInline
+          names={includedNames}
+          className="mb-3 text-[11px] leading-snug text-brand-cream/35"
+        />
+        {!promo.description && !includedNames.length ? <div className="mb-3" /> : null}
         <div className="flex items-center justify-between">
           <div className="font-display text-[30px] text-brand-orange">
             {formatMoney(promo.price)}

@@ -149,9 +149,13 @@ export default function PromoForm({
       />
 
       <div>
-        <span className="admin-label mb-2 block text-[11px] font-bold uppercase tracking-wide text-brand-cream/40">
-          Productos incluidos (opcional)
+        <span className="admin-label mb-1 block text-[11px] font-bold uppercase tracking-wide text-brand-cream/40">
+          Productos incluidos en esta promo
         </span>
+        <p className="mb-2 text-xs text-brand-cream/45">
+          Seleccioná los productos que componen la promoción. Se mostrarán al cliente como
+          detalle informativo.
+        </p>
         <div className="grid gap-2 sm:grid-cols-2">
           {products.map((product) => (
             <AdminCheckbox

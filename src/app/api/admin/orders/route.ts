@@ -57,7 +57,7 @@ export async function GET(request: Request) {
       include: { items: true },
     });
 
-    return jsonOk({ orders: orders.map(serializeAdminOrder) });
+    return jsonOk({ orders: orders.map((order) => serializeAdminOrder(order)) });
   } catch (error) {
     return handleApiError(error, "api/admin/orders GET");
   }

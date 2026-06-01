@@ -77,7 +77,10 @@ export function serializeAdminPromo(
   };
 }
 
-export function serializeAdminOrderItem(item: OrderItem) {
+export function serializeAdminOrderItem(
+  item: OrderItem,
+  includedProductNames?: string[],
+) {
   return {
     id: item.id,
     name: item.name,
@@ -86,10 +89,17 @@ export function serializeAdminOrderItem(item: OrderItem) {
     subtotal: decimalToNumber(item.subtotal),
     productId: item.productId,
     promoId: item.promoId,
+    includedProductNames:
+      includedProductNames && includedProductNames.length > 0
+        ? includedProductNames
+        : undefined,
   };
 }
 
-export function serializeAdminOrder(order: Order & { items?: OrderItem[] }) {
+export function serializeAdminOrder(
+  order: Order & { items?: OrderItem[] },
+  promoIncludesMap?: Map<string, string[]>,
+) {
   return {
     id: order.id,
     orderCode: order.orderCode,
@@ -105,7 +115,13 @@ export function serializeAdminOrder(order: Order & { items?: OrderItem[] }) {
     total: decimalToNumber(order.total),
     status: order.status,
     whatsappMessage: order.whatsappMessage,
-    items: order.items?.map(serializeAdminOrderItem) ?? [],
+    items:
+      order.items?.map((item) =>
+        serializeAdminOrderItem(
+          item,
+          item.promoId ? promoIncludesMap?.get(item.promoId) : undefined,
+        ),
+      ) ?? [],
     createdAt: order.createdAt.toISOString(),
     updatedAt: order.updatedAt.toISOString(),
   };

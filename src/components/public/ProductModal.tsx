@@ -1,7 +1,9 @@
 "use client";
 
 import PublicImage from "@/components/public/PublicImage";
+import { PromoIncludesSection } from "@/components/public/PromoIncludes";
 import { formatMoney } from "@/lib/format";
+import { getIncludedProductNames } from "@/lib/promo-includes";
 import { usePublicStore } from "@/context/PublicStoreProvider";
 
 export default function ProductModal() {
@@ -22,6 +24,9 @@ export default function ProductModal() {
   const imagePosition = isProduct
     ? modalItem.product.imagePosition
     : modalItem.promo.imagePosition;
+  const includedNames = isProduct
+    ? []
+    : getIncludedProductNames(modalItem.promo.products);
 
   return (
     <div
@@ -62,6 +67,7 @@ export default function ProductModal() {
           {description ? (
             <p className="mb-3.5 text-[13px] text-brand-cream/45">{description}</p>
           ) : null}
+          {!isProduct ? <PromoIncludesSection names={includedNames} /> : null}
           <div className="mb-[18px] font-display text-[40px] text-brand-orange">
             {formatMoney(price)}
           </div>

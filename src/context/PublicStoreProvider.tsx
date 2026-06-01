@@ -19,6 +19,7 @@ import {
   updateOrderInHistory,
   type StoredOrderHistoryEntry,
 } from "@/lib/order-tracking-storage";
+import { getIncludedProductNames } from "@/lib/promo-includes";
 import { resolveRepeatOrderItems } from "@/lib/repeat-order";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import type {
@@ -166,12 +167,16 @@ export function PublicStoreProvider({
 
   const addPromoToCart = useCallback(
     (promo: PublicPromo) => {
+      const includedProductNames = getIncludedProductNames(promo.products);
       cart.addItem({
         type: "promo",
         promoId: promo.id,
         name: promo.title,
         price: promo.price,
         imageUrl: promo.imageUrl,
+        includedProductNames: includedProductNames.length
+          ? includedProductNames
+          : undefined,
       });
       showToast("✅ Agregado al carrito");
     },

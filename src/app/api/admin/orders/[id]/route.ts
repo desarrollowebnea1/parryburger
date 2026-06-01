@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { serializeAdminOrder } from "@/lib/admin/serializers";
+import { includedProductsMapFromPromos } from "@/lib/orders/public-order";
 import {
   dynamic,
   handleApiError,
@@ -27,7 +28,20 @@ export async function GET(_request: Request, { params }: RouteContext) {
       return jsonError("Pedido no encontrado", 404);
     }
 
-    return jsonOk({ order: serializeAdminOrder(order) });
+    const promoIds = order.items
+      .map((item) => item.promoId)
+      .filter((id): id is string => Boolean(id));
+
+    const promos = promoIds.length
+      ? await prisma.promo.findMany({
+          where: { id: { in: promoIds } },
+          include: { products: { include: { product: true } } },
+        })
+      : [];
+
+    const promoIncludesMap = includedProductsMapFromPromos(promos);
+
+    return jsonOk({ order: serializeAdminOrder(order, promoIncludesMap) });
   } catch (error) {
     return handleApiError(error, "api/admin/orders/[id] GET");
   }

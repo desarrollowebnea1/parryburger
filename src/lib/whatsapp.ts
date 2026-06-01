@@ -5,6 +5,8 @@ export type WhatsAppOrderLine = {
   price: number;
   quantity: number;
   subtotal: number;
+  promoId?: string | null;
+  includedProductNames?: string[];
 };
 
 export type WhatsAppOrderInput = {
@@ -53,7 +55,14 @@ export function buildWhatsAppMessage(input: WhatsAppOrderInput): string {
 
   message += `\n*PEDIDO:*\n`;
   for (const item of input.items) {
-    message += `${item.quantity} x ${item.name} - ${formatMoney(item.subtotal)}\n`;
+    if (item.promoId) {
+      message += `${item.quantity} x Promo: ${item.name} — ${formatMoney(item.price)} - ${formatMoney(item.subtotal)}\n`;
+      if (item.includedProductNames?.length) {
+        message += `Incluye: ${item.includedProductNames.join(", ")}\n`;
+      }
+    } else {
+      message += `${item.quantity} x ${item.name} - ${formatMoney(item.subtotal)}\n`;
+    }
   }
 
   if (input.notes?.trim()) {
