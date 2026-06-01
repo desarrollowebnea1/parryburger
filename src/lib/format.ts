@@ -12,11 +12,17 @@ export function formatWhatsAppDisplay(number: string): string {
 }
 
 export function instagramHandle(url: string | null): string {
-  if (!url) return "";
+  if (!url?.trim()) return "";
+  const trimmed = url.trim();
+  if (!/^https?:\/\//i.test(trimmed)) {
+    const handle = trimmed.replace(/^@/, "").replace(/^\//, "").split("/")[0];
+    return handle ? `@${handle}` : "";
+  }
   try {
-    const path = new URL(url).pathname.replace(/\//g, "");
+    const path = new URL(trimmed).pathname.replace(/\//g, "");
+    if (!path) return "";
     return path.startsWith("@") ? path : `@${path}`;
   } catch {
-    return url;
+    return trimmed.startsWith("@") ? trimmed : `@${trimmed.replace(/^@/, "")}`;
   }
 }

@@ -196,7 +196,11 @@
   }
 
   .wa-contact-btn {
-    @apply mt-1 flex w-full items-center justify-center gap-2 rounded-lg border-none bg-whatsapp px-4 py-3 text-sm font-black text-white transition-all hover:-translate-y-px hover:bg-whatsapp-dark;
+    @apply mt-1 flex w-full items-center justify-center gap-2 rounded-lg border-none bg-whatsapp px-4 py-3 text-sm font-black text-white no-underline transition-all hover:-translate-y-px hover:bg-whatsapp-dark;
+  }
+
+  .contact-link-row {
+    @apply -mx-1 cursor-pointer rounded-lg px-1 py-0.5 no-underline transition-colors hover:bg-white/[0.04] active:bg-white/[0.06];
   }
 
   .info-card {
