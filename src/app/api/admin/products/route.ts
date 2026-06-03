@@ -8,9 +8,8 @@ import {
   jsonOk,
   requireAdminApi,
 } from "@/lib/api/admin";
-import {
-  createProductSchema,
-} from "@/lib/validators/product";
+import { createProductSchema } from "@/lib/validators/product";
+import { formatZodError, logZodValidation } from "@/lib/validators/zod-messages";
 
 export { dynamic };
 
@@ -39,7 +38,8 @@ export async function POST(request: Request) {
     const parsed = createProductSchema.safeParse(body);
 
     if (!parsed.success) {
-      return jsonError(parsed.error.issues[0]?.message ?? "Datos inválidos", 400);
+      logZodValidation("api/admin/products POST", parsed.error);
+      return jsonError(formatZodError(parsed.error), 400);
     }
 
     const input = parsed.data;

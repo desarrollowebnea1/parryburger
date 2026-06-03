@@ -9,6 +9,7 @@ import {
   requireAdminApi,
 } from "@/lib/api/admin";
 import { updateProductSchema } from "@/lib/validators/product";
+import { formatZodError, logZodValidation } from "@/lib/validators/zod-messages";
 
 export { dynamic };
 
@@ -48,7 +49,8 @@ export async function PATCH(request: Request, { params }: RouteContext) {
     const parsed = updateProductSchema.safeParse(body);
 
     if (!parsed.success) {
-      return jsonError(parsed.error.issues[0]?.message ?? "Datos inválidos", 400);
+      logZodValidation("api/admin/products/[id] PATCH", parsed.error);
+      return jsonError(formatZodError(parsed.error), 400);
     }
 
     const input = parsed.data;
